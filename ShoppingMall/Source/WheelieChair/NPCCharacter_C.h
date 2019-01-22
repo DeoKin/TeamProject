@@ -11,10 +11,14 @@ UENUM(BlueprintType)
 enum class ENPCBehaviour : uint8 {
   VE_Nothing UMETA(DisplayName = "Do Nothing"),
   VE_Random UMETA(DisplayName = "At Random"),
-  VE_OrderLoop UMETA(DisplayName = "In Order - One Way")
+  VE_OrderLoop UMETA(DisplayName = "In Order - One Way"),
+  VE_OrderPingPong UMETA(DisplayName = "In Order - Two Way"),
+  VE_Follow UMETA(DisplayName = "Follow")
 };
 
 /**
+* DON'T USE THIS CLASS, IT DIDN'T WORK OUT
+*
 * This class represents to regular NPCs that will inhabit the level(s) in this game.
 * They can have various behaviours (e.g. travel between points at random, follow an Game Actor), as determined by the user
 */
@@ -30,9 +34,6 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-    // Called as the game starts, to create the neccessary blackboard keys
-    TArray<FName> GetBlackboardKeys();
 
 public:	
 	// Called every frame
@@ -71,4 +72,9 @@ public:
     */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     bool ShouldNoticePlayer;
+
+private:
+  //The blackboard keys this NPC's AI Controller will use in its behaviour tree
+  //Static because they're the same across all instances
+  static FName BlackboardKeys[];
 };
